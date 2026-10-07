@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dicky</title>
+<meta name="description" content="Dicky's personal web hub">
+<style>
+:root{
+  --bg:#f6f7f9;--card:#fff;--ink:#1f2937;--muted:#6b7280;
+  --soft:#9ca3af;--line:#e5e7eb;--shadow:0 1px 2px rgba(16,24,40,.04),0 1px 3px rgba(16,24,40,.06)
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei",Roboto,Arial,sans-serif;
+  font-size:14px;line-height:1.5
+}
+.wrap{width:min(1080px,calc(100% - 32px));margin:auto;padding:28px 0 48px}
+header{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:12px}
+.avatar{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:#111827;color:#fff;font-weight:700;font-size:16px}
+h1{margin:0;font-size:20px;line-height:1.2}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}
+.count{color:var(--muted);font-size:12px}
+.search{width:100%;height:44px;border:1px solid var(--line);border-radius:12px;padding:0 14px;background:#fff;color:var(--ink);outline:none;box-shadow:var(--shadow);font:inherit;margin-bottom:22px}
+.search:focus{border-color:#bfdbfe;box-shadow:0 0 0 3px #dbeafe}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:0 2px 10px}
+.section-title{font-size:13px;font-weight:650;color:#374151}
+.section-sub{color:var(--soft);font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.app{
+  display:flex;align-items:center;gap:14px;min-height:96px;padding:15px;
+  background:var(--card);border:1px solid var(--line);border-radius:12px;
+  box-shadow:var(--shadow);color:inherit;text-decoration:none;
+  transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease
+}
+.app:hover{transform:translateY(-1px);border-color:#d1d5db;box-shadow:0 4px 12px rgba(16,24,40,.07)}
+.icon{flex:0 0 auto;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:var(--icon-bg)}
+.info{min-width:0;flex:1}
+.title{margin:0 0 3px;font-size:14px;font-weight:650;color:#111827}
+.desc{margin:0;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tag{display:inline-flex;margin-top:7px;padding:2px 7px;border-radius:999px;background:#f3f4f6;color:#6b7280;font-size:10px;font-weight:600}
+.arrow{flex:0 0 auto;color:#b5bbc4;font-size:18px}
+.empty{display:none;padding:34px 16px;text-align:center;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:12px}
+footer{margin-top:24px;color:#9ca3af;font-size:11px;text-align:center}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){
+  .wrap{width:min(100% - 22px,1080px);padding-top:18px}
+  header{margin-bottom:16px}.grid{grid-template-columns:1fr}.app{min-height:88px}.count{display:none}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <div class="brand">
+      <div class="avatar">D</div>
+      <div>
+        <h1>Dicky</h1>
+        <p>Personal tools & pages</p>
+      </div>
+    </div>
+    <div class="count" id="count"></div>
+  </header>
+
+  <input class="search" id="search" type="search" placeholder="搜尋我的工具…" autocomplete="off">
+
+  <div class="section-head">
+    <div class="section-title">我的工具</div>
+    <div class="section-sub">Click to open</div>
+  </div>
+
+  <section class="grid" id="grid"></section>
+  <div class="empty" id="empty">搵唔到相關工具</div>
+
+  <footer>Dicky Web Hub</footer>
+</main>
+
+<script>
+const sites = [
+  {
+    title:"JobTrack Pro",
+    description:"求職與申請進度管理",
+    icon:"💼",category:"Work",color:"#eff6ff",
+    href:"https://hasonk200.github.io/job-tracker-pro/"
+  },
+  {
+    title:"Delivery King",
+    description:"外送日誌、收入與工作紀錄",
+    icon:"🚲",category:"Delivery",color:"#fff7ed",
+    href:"https://hasonk200.github.io/deliveryking/"
+  },
+  {
+    title:"Nutrition",
+    description:"食物營養分類速查",
+    icon:"🥗",category:"Food",color:"#f0fdf4",
+    href:"https://hasonk200.github.io/nutrition-/"
+  },
+  {
+    title:"Supplement Tracker",
+    description:"補充品數量、服用與庫存",
+    icon:"💊",category:"Health",color:"#f0fdf4",
+    href:"https://hasonk200.github.io/nutrition-supplement-tracker/"
+  },
+  {
+    title:"Quota Tracker",
+    description:"AI 額度與重置紀錄",
+    icon:"⚡",category:"AI",color:"#faf5ff",
+    href:"https://hasonk200.github.io/claude-mini-store/quota-tracker/"
+  },
+  {
+    title:"Credit Tracker",
+    description:"額度、使用量與重置進度",
+    icon:"💳",category:"Private",color:"#eff6ff",
+    href:"https://github.com/hasonk200/CreditTracker"
+  }
+];
+
+const grid=document.getElementById("grid");
+const search=document.getElementById("search");
+const empty=document.getElementById("empty");
+const count=document.getElementById("count");
+
+function render(query=""){
+  const q=query.trim().toLowerCase();
+  const filtered=sites.filter(s =>
+    `${s.title} ${s.description} ${s.category}`.toLowerCase().includes(q)
+  );
+
+  grid.innerHTML=filtered.map(s=>`
+    <a class="app" href="${s.href}">
+      <div class="icon" style="--icon-bg:${s.color}">${s.icon}</div>
+      <div class="info">
+        <div class="title">${s.title}</div>
+        <p class="desc">${s.description}</p>
+        <span class="tag">${s.category}</span>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+  `).join("");
+
+  empty.style.display=filtered.length?"none":"block";
+  count.textContent=`${sites.length} tools`;
+}
+
+search.addEventListener("input",e=>render(e.target.value));
+render();
+</script>
+</body>
+</html>
