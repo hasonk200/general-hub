@@ -36,7 +36,8 @@ h1{margin:0;font-size:20px;line-height:1.2}
   transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease
 }
 .app:hover{transform:translateY(-1px);border-color:#d1d5db;box-shadow:0 4px 12px rgba(16,24,40,.07)}
-.icon{flex:0 0 auto;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:var(--icon-bg)}
+.icon{flex:0 0 auto;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:var(--icon-bg);overflow:hidden}
+.icon img{width:100%;height:100%;display:block;object-fit:cover}
 .info{min-width:0;flex:1}
 .title{margin:0 0 3px;font-size:14px;font-weight:650;color:#111827}
 .desc{margin:0;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -100,7 +101,7 @@ const sites = [
   {
     title:"ontime(claude)",
     description:"Claude 版作息、工作與睡眠紀錄",
-    icon:"⏱️",category:"Work",color:"#f5f3ff",
+    icon:'<img src="https://hasonk200.github.io/claude-mini-store/ontime/icons/icon.svg" alt="OnTime icon">',category:"Work",color:"#f5f3ff",
     href:"https://hasonk200.github.io/claude-mini-store/ontime/"
   },
   {
